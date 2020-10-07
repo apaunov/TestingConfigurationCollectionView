@@ -57,8 +57,8 @@ class ViewController: UICollectionViewController {
                 return configuration
             }
             
-            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(20.0))
-            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+            let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(20.0))
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
             
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
             section.boundarySupplementaryItems = [sectionHeader]
