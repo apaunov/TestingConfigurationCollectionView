@@ -42,37 +42,45 @@ class ViewController: UICollectionViewController {
     }
     
     private func configureLayout() {
-        var config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-        config.headerMode = .supplementary
-        config.backgroundColor = .systemPurple
-        config.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
-            guard self != nil else {
-                return nil
+        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout(sectionProvider: { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+            var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+            configuration.headerMode = .supplementary
+            configuration.backgroundColor = .systemPurple
+            configuration.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
+                guard self != nil else {
+                    return nil
+                }
+                
+                let editAction = UIContextualAction(style: .normal, title: "Edit") { (_, _, handler) in
+                    NSLog("==== \(indexPath.row) editAction clicked")
+                    
+                    handler(true)
+                }
+                
+                editAction.backgroundColor = .systemTeal
+                    
+                let deleteAction = UIContextualAction(style: .normal, title: "Delete") { (_, _, handler) in
+                    NSLog("==== \(indexPath.row) deleteAction clicked")
+                    
+                    handler(true)
+                }
+                    
+                deleteAction.backgroundColor = .red
+             
+                let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+                configuration.performsFirstActionWithFullSwipe = false
+                
+                return configuration
             }
             
-            let editAction = UIContextualAction(style: .normal, title: "Edit") { (_, _, handler) in
-                NSLog("==== \(indexPath.row) editAction clicked")
-                
-                handler(true)
-            }
+            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(20.0))
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
             
-            editAction.backgroundColor = .systemTeal
-                
-            let deleteAction = UIContextualAction(style: .normal, title: "Delete") { (_, _, handler) in
-                NSLog("==== \(indexPath.row) deleteAction clicked")
-                
-                handler(true)
-            }
-                
-            deleteAction.backgroundColor = .red
-         
-            let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
-            configuration.performsFirstActionWithFullSwipe = false
+            let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
+            section.boundarySupplementaryItems = [sectionHeader]
             
-            return configuration
-        }
-        
-        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout.list(using: config)
+            return section
+        })
     }
     
     private func makeDataSource() -> DataSource {

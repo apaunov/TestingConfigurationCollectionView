@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "879AD77C-BB04-4341-8A02-2F5FFFF34EC2"
-            shouldBeEnabled = "No"
+            uuid = "4627F6B8-5F6D-475D-BA71-08597DB16969"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestingConfigurationCollectionView/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "applySnapshot(animatingDifferences:)"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "makeDataSource()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
