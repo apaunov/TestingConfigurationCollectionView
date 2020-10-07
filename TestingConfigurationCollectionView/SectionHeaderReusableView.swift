@@ -18,7 +18,7 @@ class SectionHeaderReusableView: UICollectionReusableView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title1).pointSize, weight: .bold)
         label.adjustsFontForContentSizeCategory = true
-        label.textColor = .label
+        label.textColor = .white
         label.textAlignment = .left
         label.numberOfLines = 1
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -29,7 +29,6 @@ class SectionHeaderReusableView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .systemBackground
         addSubview(titleLabel)
         
         if UIDevice.current.userInterfaceIdiom == .pad {

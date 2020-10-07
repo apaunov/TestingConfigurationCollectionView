@@ -9,13 +9,7 @@ import UIKit
 
 class ViewController: UICollectionViewController {
     private lazy var dataSource = makeDataSource()
-    private var sections = Continent.allCases
-    
-    private var countries = [Country]() {
-        didSet {
-            applySnapshot()
-        }
-    }
+    private var continents = Continent.allContinents
     
     private typealias DataSource = UICollectionViewDiffableDataSource<Continent, Country>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Continent, Country>
@@ -25,21 +19,11 @@ class ViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initializeData()
         configureLayout()
         applySnapshot(animatingDifferences: false)
     }
 
     // MARK: - Helper functions
-    
-    private func initializeData() {
-        self.countries.append(Country(name: "Canada", capital: "Ottawa", continent: .northAmerica))
-        self.countries.append(Country(name: "China", capital: "Beijing", continent: .asia))
-        self.countries.append(Country(name: "India", capital: "New Delhi", continent: .asia))
-        self.countries.append(Country(name: "Nepal", capital: "Kathmandu", continent: .asia))
-        self.countries.append(Country(name: "Romania", capital: "Bucharest", continent: .europe))
-        self.countries.append(Country(name: "USA", capital: "Washington", continent: .northAmerica))
-    }
     
     private func configureLayout() {
         collectionView.collectionViewLayout = UICollectionViewCompositionalLayout(sectionProvider: { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
@@ -104,7 +88,9 @@ class ViewController: UICollectionViewController {
         }
         
         let headerRegistration = UICollectionView.SupplementaryRegistration<SectionHeaderReusableView>(elementKind: "Header") { (supplementaryView, string, indexPath) in
-            supplementaryView.titleLabel.text = string
+            let continent = dataSource.snapshot().sectionIdentifiers[indexPath.section]
+            
+            supplementaryView.titleLabel.text = continent.name
         }
         
         dataSource.supplementaryViewProvider = { (collectionView, elementKind, indexPath) in
@@ -120,10 +106,10 @@ class ViewController: UICollectionViewController {
     
     private func applySnapshot(animatingDifferences: Bool = true) {
         var snapshot = Snapshot()
-        snapshot.appendSections(sections)
+        snapshot.appendSections(continents)
 
-        countries.forEach { country in
-            snapshot.appendItems([country], toSection: country.continent)
+        continents.forEach { continent in
+            snapshot.appendItems(continent.countries, toSection: continent)
         }
 
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)

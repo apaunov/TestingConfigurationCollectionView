@@ -11,12 +11,10 @@ class Country: Hashable {
     var id = UUID()
     var name: String
     var capital: String?
-    var continent: Continent?
     
-    init(name: String, capital: String?, continent: Continent?) {
+    init(name: String, capital: String?) {
         self.name = name
         self.capital = capital
-        self.continent = continent
     }
     
     func hash(into hasher: inout Hasher) {
