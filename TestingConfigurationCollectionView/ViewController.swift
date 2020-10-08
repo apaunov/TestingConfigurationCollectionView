@@ -30,23 +30,23 @@ class ViewController: UICollectionViewController {
             var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
             configuration.headerMode = .supplementary
             configuration.backgroundColor = .systemPurple
-            configuration.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
-                guard self != nil else {
-                    return nil
-                }
-                
-                let editAction = UIContextualAction(style: .normal, title: "Edit") { (_, _, handler) in
-                    NSLog("==== \(indexPath.row) editAction clicked")
+            configuration.trailingSwipeActionsConfigurationProvider = { indexPath in
+                let editAction = UIContextualAction(style: .normal, title: "Edit") { (_, _, completionHandler) in
+                    NSLog("==== EditAction clicked")
                     
-                    handler(true)
+                    completionHandler(true)
                 }
                 
                 editAction.backgroundColor = .systemTeal
                     
-                let deleteAction = UIContextualAction(style: .normal, title: "Delete") { (_, _, handler) in
-                    NSLog("==== \(indexPath.row) deleteAction clicked")
+                let deleteAction = UIContextualAction(style: .normal, title: "Delete") { (_, _, completionHandler) in
+                    let section = self.dataSource.snapshot().sectionIdentifiers[sectionIndex]
+                    let item = self.dataSource.itemIdentifier(for: indexPath)
+
+                    self.removeItem(item, fromSection: section)
+                    self.applySnapshot()
                     
-                    handler(true)
+                    completionHandler(true)
                 }
                     
                 deleteAction.backgroundColor = .red
@@ -113,6 +113,38 @@ class ViewController: UICollectionViewController {
         }
 
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+    }
+    
+    private func removeItem(_ item: Country?, fromSection section: Continent) {
+        guard let item = item else {
+            return
+        }
+        
+        var countryIndex = 0
+        
+        for country in section.countries {
+            if country.id == item.id {
+                break
+            }
+            
+            countryIndex += 1
+        }
+        
+        section.countries.remove(at: countryIndex)
+        
+        if section.countries.count == 0 {
+            var continentIndex = 0
+            
+            for continent in continents {
+                if continent.id == section.id {
+                    break
+                }
+                
+                continentIndex += 1
+            }
+            
+            continents.remove(at: continentIndex)
+        }
     }
 }
 
