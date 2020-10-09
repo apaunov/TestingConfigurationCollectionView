@@ -39,7 +39,7 @@ class ViewController: UICollectionViewController {
                 
                 editAction.backgroundColor = .systemTeal
                     
-                let deleteAction = UIContextualAction(style: .normal, title: "Delete") { (_, _, completionHandler) in
+                let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, completionHandler) in
                     let section = self.dataSource.snapshot().sectionIdentifiers[sectionIndex]
                     let item = self.dataSource.itemIdentifier(for: indexPath)
 
@@ -87,7 +87,7 @@ class ViewController: UICollectionViewController {
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: country)
         }
         
-        let headerRegistration = UICollectionView.SupplementaryRegistration<SectionHeaderReusableView>(elementKind: "Header") { (supplementaryView, string, indexPath) in
+        let headerRegistration = UICollectionView.SupplementaryRegistration<SectionHeaderReusableView>(elementKind: "Header") { (supplementaryView, headerTitle, indexPath) in
             let continent = dataSource.snapshot().sectionIdentifiers[indexPath.section]
             
             supplementaryView.titleLabel.text = continent.name
